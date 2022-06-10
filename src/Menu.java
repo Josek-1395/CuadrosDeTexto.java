@@ -1,5 +1,6 @@
 
 import javax.swing.*;
+import javax.swing.text.*;
 import java.awt.event.*;
 import java.awt.*;
 
@@ -32,8 +33,8 @@ class LayerMenu extends JPanel{
         add(barramenu,BorderLayout.NORTH);
         JPanel lamina_texto = new JPanel();
         lamina_texto.setLayout(new BorderLayout());
-        texto = new JTextArea(20,30);
-        texto.setLineWrap(true);
+        texto = new JTextPane();
+        //texto.setLineWrap(true);
         lamina_texto.add(texto);
         add(lamina_texto,BorderLayout.CENTER);
         JToolBar barra = new JToolBar();
@@ -42,12 +43,33 @@ class LayerMenu extends JPanel{
         cursivabarra = new JButton("cursiva", new ImageIcon("icons/cursiva.png"));
         azulbarra = new JButton("Azul", new ImageIcon("icons/azul.png"));
         rojobarra = new JButton("Rojo", new ImageIcon("icons/rojo.png"));
+        centrarbarra = new JButton("Centrar"); centrarbarra.addActionListener(new Oyentealineado());
+        azulbarra.addActionListener(new OyenteColor());
+        rojobarra.addActionListener(new OyenteColor());
         cursivabarra.addActionListener(new OyenteEstilo());
         negritabarra.addActionListener(new OyenteEstilo());
         barra.add(azulbarra); barra.add(rojobarra);
         barra.add(negritabarra); barra.add(cursivabarra);
+        barra.add(centrarbarra);
         add(barra,BorderLayout.WEST);
 
+    }
+    private class Oyentealineado implements ActionListener{
+        public void actionPerformed (ActionEvent e){
+            if(e.getSource() == centrarbarra) {
+                StyledDocument doc = texto.getStyledDocument();         //creo un objeto documento con estilo para modificar
+                SimpleAttributeSet center = new SimpleAttributeSet();   //para modificar texto necesito un obj tipo set de atributos
+                StyleConstants.setAlignment(center, StyleConstants.ALIGN_CENTER);  //configuro esa clase con el atributo que necesito
+                doc.setParagraphAttributes(0, doc.getLength(), center, false);  //aplico los atributos al objeto documento
+            }
+        }
+    }
+    private class OyenteColor implements ActionListener{
+        public void actionPerformed (ActionEvent e){
+            if (e.getSource() == azulbarra) texto.setForeground(Color.blue);
+            if (e.getSource() == rojobarra) texto.setForeground(Color.red);
+
+        }
     }
     private class OyenteFuente implements ActionListener{
         public void actionPerformed (ActionEvent e){
@@ -71,7 +93,8 @@ class LayerMenu extends JPanel{
     JButton negritabarra;
     JButton cursivabarra;
     JButton azulbarra;
-    private JTextArea texto;
+    JButton centrarbarra;
+    private JTextPane texto;
     private JMenuItem arial;
     private JMenuItem serif;
     private JMenuItem cursiva;
