@@ -1,15 +1,5 @@
-import javax.swing.ImageIcon;
-import javax.swing.JCheckBoxMenuItem;
-import javax.swing.JFrame;
-import javax.swing.JMenu;
-import javax.swing.JMenuBar;
-import javax.swing.JMenuItem;
-import javax.swing.JPanel;
-import javax.swing.JRadioButtonMenuItem;
-import javax.swing.JTextArea;
-import javax.swing.KeyStroke;
-import javax.swing.SwingConstants;
 
+import javax.swing.*;
 import java.awt.event.*;
 import java.awt.*;
 
@@ -46,6 +36,17 @@ class LayerMenu extends JPanel{
         texto.setLineWrap(true);
         lamina_texto.add(texto);
         add(lamina_texto,BorderLayout.CENTER);
+        JToolBar barra = new JToolBar();
+        barra.setOrientation(1); //1 vertical y 0 horizontal
+        negritabarra = new JButton("Negrita", new ImageIcon("icons/negrita.png"));
+        cursivabarra = new JButton("cursiva", new ImageIcon("icons/cursiva.png"));
+        azulbarra = new JButton("Azul", new ImageIcon("icons/azul.png"));
+        rojobarra = new JButton("Rojo", new ImageIcon("icons/rojo.png"));
+        cursivabarra.addActionListener(new OyenteEstilo());
+        negritabarra.addActionListener(new OyenteEstilo());
+        barra.add(azulbarra); barra.add(rojobarra);
+        barra.add(negritabarra); barra.add(cursivabarra);
+        add(barra,BorderLayout.WEST);
 
     }
     private class OyenteFuente implements ActionListener{
@@ -56,8 +57,8 @@ class LayerMenu extends JPanel{
     }
     private class OyenteEstilo implements ActionListener{
         public void actionPerformed (ActionEvent e){
-            if(e.getSource()==cursiva) texto.setFont(texto.getFont().deriveFont(Font.ITALIC));
-            if(e.getSource()==negrita) texto.setFont(texto.getFont().deriveFont(Font.BOLD));
+            if(e.getSource()==cursiva || e.getSource() == cursivabarra) texto.setFont(texto.getFont().deriveFont(Font.ITALIC));
+            if(e.getSource()==negrita || e.getSource() == negritabarra) texto.setFont(texto.getFont().deriveFont(Font.BOLD));
     }
     }
     private class OyenteTamano implements ActionListener{
@@ -66,6 +67,10 @@ class LayerMenu extends JPanel{
             if(e.getSource()==veinte) texto.setFont(texto.getFont().deriveFont(20f));
     }
     }   
+    JButton rojobarra;
+    JButton negritabarra;
+    JButton cursivabarra;
+    JButton azulbarra;
     private JTextArea texto;
     private JMenuItem arial;
     private JMenuItem serif;
